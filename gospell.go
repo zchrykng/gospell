@@ -11,10 +11,13 @@ import (
 	"strings"
 )
 
+type HashMap map[string]int
+
 // GoSpell is main struct
 type GoSpell struct {
 	Config DictConfig
 	Dict   map[string]struct{} // likely will contain some value later
+	Hash   map[string]HashMap
 
 	ireplacer *strings.Replacer // input conversion
 	compounds []*regexp.Regexp
@@ -22,7 +25,8 @@ type GoSpell struct {
 }
 
 // InputConversion does any character substitution before checking
-//  This is based on the ICONV stanza
+//
+//	This is based on the ICONV stanza
 func (s *GoSpell) InputConversion(raw []byte) string {
 	sraw := string(raw)
 	if s.ireplacer == nil {
@@ -60,7 +64,9 @@ func (s *GoSpell) AddWordListFile(name string) ([]string, error) {
 }
 
 // AddWordList adds basic word lists, just one word per line
-//  Assumed to be in UTF-8
+//
+//	Assumed to be in UTF-8
+//
 // TODO: hunspell compatible with "*" prefix for forbidden words
 // and affix support
 // returns list of duplicated words and/or error
@@ -87,7 +93,7 @@ func (s *GoSpell) AddWordList(r io.Reader) ([]string, error) {
 // Spell checks to see if a given word is in the internal dictionaries
 // TODO: add multiple dictionaries
 func (s *GoSpell) Spell(word string) bool {
-	//log.Printf("Checking %s", word)
+	// log.Printf("Checking %s", word)
 	_, ok := s.Dict[word]
 	if ok {
 		return true
@@ -139,6 +145,12 @@ func (s *GoSpell) Spell(word string) bool {
 	return false
 }
 
+func (s *GoSpell) Suggest(word string) []string {
+	var suggestions []string
+
+	return suggestions
+}
+
 // NewGoSpellReader creates a speller from io.Readers for
 // Hunspell files
 func NewGoSpellReader(aff, dic io.Reader) (*GoSpell, error) {
@@ -164,16 +176,16 @@ func NewGoSpellReader(aff, dic io.Reader) (*GoSpell, error) {
 		splitter:  NewSplitter(affix.WordChars),
 	}
 
-	words := []string{}
+	var words []string
 	for scanner.Scan() {
 		line := scanner.Text()
 		words, err = affix.Expand(line, words)
 		if err != nil {
-			return nil, fmt.Errorf("Unable to process %q: %s", line, err)
+			return nil, fmt.Errorf("unable to process %q: %s", line, err)
 		}
 
 		if len(words) == 0 {
-			//log.Printf("No words for %s", line)
+			// log.Printf("No words for %s", line)
 			continue
 		}
 
@@ -194,13 +206,13 @@ func NewGoSpellReader(aff, dic io.Reader) (*GoSpell, error) {
 		for _, key := range compoundRule {
 			switch key {
 			case '(', ')', '+', '?', '*':
-				pattern = pattern + string(key)
+				pattern += string(key)
 			default:
 				groups := affix.compoundMap[key]
 				pattern = pattern + "(" + strings.Join(groups, "|") + ")"
 			}
 		}
-		pattern = pattern + "$"
+		pattern += "$"
 		pat, err := regexp.Compile(pattern)
 		if err != nil {
 			log.Printf("REGEXP FAIL= %q %s", pattern, err)
@@ -220,12 +232,12 @@ func NewGoSpellReader(aff, dic io.Reader) (*GoSpell, error) {
 func NewGoSpell(affFile, dicFile string) (*GoSpell, error) {
 	aff, err := os.Open(affFile)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to open aff: %s", err)
+		return nil, fmt.Errorf("unable to open aff: %s", err)
 	}
 	defer aff.Close()
 	dic, err := os.Open(dicFile)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to open dic: %s", err)
+		return nil, fmt.Errorf("unable to open dic: %s", err)
 	}
 	defer dic.Close()
 	h, err := NewGoSpellReader(aff, dic)

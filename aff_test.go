@@ -7,7 +7,6 @@ import (
 )
 
 // SmokeTest for AFF parser.  Contains a little bit of everything.
-//
 func TestAFFSmoke(t *testing.T) {
 	sample := `
 #
@@ -46,10 +45,8 @@ COMPOUNDMIN 2
 
 	if len(aff.IconvReplacements) != 2 {
 		t.Errorf("Didn't get ICONV replacement")
-	} else {
-		if aff.IconvReplacements[0] != "a" || aff.IconvReplacements[1] != "b" {
-			t.Errorf("Replacement isnt a->b, got %v", aff.IconvReplacements)
-		}
+	} else if aff.IconvReplacements[0] != "a" || aff.IconvReplacements[1] != "b" {
+		t.Errorf("Replacement isnt a->b, got %v", aff.IconvReplacements)
 	}
 
 	if len(aff.Replacements) != 1 {
@@ -64,7 +61,7 @@ COMPOUNDMIN 2
 	if len(aff.AffixMap) != 2 {
 		t.Errorf("AffixMap is wrong size")
 	}
-	a, ok := aff.AffixMap[rune('A')]
+	a, ok := aff.AffixMap['A']
 	if !ok {
 		t.Fatalf("Didn't get Affix for A")
 	}
@@ -83,7 +80,7 @@ COMPOUNDMIN 2
 		t.Errorf("Expected %s got %s", "redefine", variations[0])
 	}
 
-	a, ok = aff.AffixMap[rune('D')]
+	a, ok = aff.AffixMap['D']
 	if !ok {
 		t.Fatalf("Didn't get Affix for D")
 	}
