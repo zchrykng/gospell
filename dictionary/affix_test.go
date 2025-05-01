@@ -1,4 +1,4 @@
-package gospell
+package dictionary
 
 import (
 	"reflect"
@@ -176,7 +176,7 @@ WORDCHARS 0123456789
 `
 	aff := strings.NewReader(sampleAff)
 	dic := strings.NewReader(sampleDic)
-	gs, err := NewGoSpellReader(aff, dic)
+	gs, err := NewDictionaryReader(aff, dic)
 	if err != nil {
 		t.Fatalf("Unable to create GoSpell: %s", err)
 	}
@@ -259,7 +259,7 @@ GB
 `
 	aff := strings.NewReader(sampleAff)
 	dic := strings.NewReader(sampleDic)
-	gs, err := NewGoSpellReader(aff, dic)
+	gs, err := NewDictionaryReader(aff, dic)
 	if err != nil {
 		t.Fatalf("Unable to create GoSpell: %s", err)
 	}
