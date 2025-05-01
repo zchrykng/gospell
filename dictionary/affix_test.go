@@ -232,7 +232,7 @@ WORDCHARS 0123456789
 		{"111th", true},
 	}
 	for pos, tt := range cases {
-		if gs.Spell(tt.word) != tt.spell {
+		if gs.Check(tt.word) != tt.spell {
 			t.Errorf("%d %q was not %v", pos, tt.word, tt.spell)
 		}
 	}
@@ -284,7 +284,7 @@ GB
 		{"0x12ff", true},
 	}
 	for pos, tt := range cases {
-		if gs.Spell(tt.word) != tt.spell {
+		if gs.Check(tt.word) != tt.spell {
 			t.Errorf("%d %q was not %v", pos, tt.word, tt.spell)
 		}
 	}
