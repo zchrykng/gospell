@@ -48,4 +48,8 @@ func main() {
 	for _, word := range words {
 		fmt.Printf("test: %s, result: %v\n", word, gs.Check(word))
 	}
+
+	word := "toast"
+	suggestions := gs.Suggest(word)
+	fmt.Printf("test: %s, suggestions: %v\n", word, suggestions)
 }
