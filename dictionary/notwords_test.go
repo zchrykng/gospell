@@ -1,4 +1,4 @@
-package gospell
+package dictionary
 
 import (
 	"testing"
