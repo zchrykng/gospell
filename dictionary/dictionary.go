@@ -174,6 +174,7 @@ func NewDictionaryReader(aff, dic io.Reader) (*Dictionary, error) {
 
 	gs := Dictionary{
 		Dict:      make(map[string]struct{}, i*5),
+		Hash:      make(map[string]HashMap, i*5),
 		compounds: make([]*regexp.Regexp, 0, len(affix.CompoundRule)),
 	}
 
