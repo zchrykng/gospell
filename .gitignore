@@ -26,3 +26,6 @@ _testmain.go
 *.prof
 .DS_Store
 .idea/
+gospell
+main
+sample
