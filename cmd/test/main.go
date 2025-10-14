@@ -42,14 +42,14 @@ func main() {
 		"runner",
 		"running",
 		"CamelCase",
-		"joint venture",
+		"flabbergast",
 	}
 
 	for _, word := range words {
 		fmt.Printf("test: %s, result: %v\n", word, gs.Check(word))
 	}
 
-	word := "toast"
+	word := "flabbergas"
 	suggestions := gs.Suggest(word)
 	fmt.Printf("test: %s, suggestions: %v\n", word, suggestions)
 }
